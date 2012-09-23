@@ -4,14 +4,13 @@ var locomotive = require('locomotive')
 var DA = require('../DAL/dataaccess');
 
 function logName(name) {
-  var db = DA();
-  db.open(function(err, db) {
-    if(!err) {
-      db.collection('greetings', function(err, collection) {
-        collection.insert({name:name});
-      });
-    }
-  });	
+  var da = DA();
+  da.saveGreeting(name);
+}
+
+function getGreetings(callback) {
+  var da = DA();
+  da.getGreetings(callback);
 }
 
 var PagesController = new Controller();
@@ -22,7 +21,12 @@ PagesController.main = function() {
   logName(name);
   
   this.message = 'Hello, ' + name + '!';
-  this.render();
+
+  var self = this;
+  getGreetings(function(greetings) {
+    this.greetings = greetings;
+    self.render();
+  });
 }
 
 module.exports = PagesController;

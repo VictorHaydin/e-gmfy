@@ -6,3 +6,6 @@ block content
     | Welcome aboard! Visit 
     a(href='http://locomotivejs.org/') locomotivejs.org 
     | for details.
+  ul
+    each g in greetings
+      li= g.name
